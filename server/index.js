@@ -7,7 +7,8 @@ import mongoose from "mongoose";
 import router from "./router/index.js";
 import errorMiddleware from "./middlewares/error-middleware.js";
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
+const PORT_CLIENT = 3000;
 const app = express();
 
 app.use(express.json());
@@ -28,8 +29,14 @@ const start = async () => {
       useUnifiedTopology: true,
     });
 
+    if (process.env.NODE_ENV === "production") {
+      app.use(express.static("../build"));
+    }
+
     app.listen(PORT, () =>
-      console.log(`Server started on PORT: ${PORT} http://localhost:${PORT}`)
+      console.log(
+        `Server started on PORT: ${PORT} http://localhost:${PORT} : client ${PORT_CLIENT} http://localhost:${PORT_CLIENT}`
+      )
     );
   } catch (error) {
     console.log(`Start error: ${error}`);

@@ -6,6 +6,11 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import router from "./router/index.js";
 import errorMiddleware from "./middlewares/error-middleware.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 8080;
 const PORT_CLIENT = 3000;
@@ -30,7 +35,14 @@ const start = async () => {
     });
 
     if (process.env.NODE_ENV === "production") {
-      app.use(express.static("../build"));
+      app.use(express.static(path.join(__dirname, "../build")));
+      app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+      });
+    } else {
+      app.get("*", (req, res) => {
+        res.send("api running");
+      });
     }
 
     app.listen(PORT, () =>

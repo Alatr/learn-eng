@@ -1,3 +1,9 @@
 # project for improve your eng skill
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Requirements
+
+* [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+
+## Heroku Open App
+
+[Open App](https://mixsentence.herokuapp.com/)

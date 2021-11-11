@@ -1,5 +1,4 @@
 import * as dotenv from "dotenv";
-dotenv.config();
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -11,9 +10,9 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, "./.env") });
 
 const PORT = process.env.PORT || 8080;
-const PORT_CLIENT = 3000;
 const app = express();
 
 app.use(express.json());
@@ -47,7 +46,7 @@ const start = async () => {
 
     app.listen(PORT, () =>
       console.log(
-        `Server started on PORT: ${PORT} http://localhost:${PORT} : client ${PORT_CLIENT} http://localhost:${PORT_CLIENT}`
+        `Server started on PORT: ${PORT} ${process.env.PORT} http://localhost:${PORT}`
       )
     );
   } catch (error) {

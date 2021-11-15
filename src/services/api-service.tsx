@@ -14,6 +14,8 @@ interface IDataSentence {
 interface IApiService {
   fetchSentences: () => void;
   addSentence: (text: FormDataEntryValue) => Promise<void>;
+  editSentence: (text: FormDataEntryValue, id: string) => Promise<void>;
+  deleteSentence: (id: string) => Promise<void>;
   sentences: IDataSentence[];
 }
 
@@ -23,6 +25,8 @@ const prefix = "api";
 export const routesApi = {
   sentences: () => [host, prefix, "sentences"].join("/"),
   addSentence: () => [host, prefix, "add_sentence"].join("/"),
+  editSentence: () => [host, prefix, "edit_sentence"].join("/"),
+  deleteSentence: () => [host, prefix, "delete_sentence"].join("/"),
 };
 
 const apiContext = createContext<IApiService>({} as IApiService);
@@ -57,11 +61,35 @@ const ApiService: FC = ({ children }) => {
     }
   }
 
+  async function editSentence(text: FormDataEntryValue, id: string) {
+    try {
+      const response = await axios.post(routesApi.editSentence(), {
+        text,
+        id,
+      });
+      // setSentence([...sentences, response.data]);
+    } catch (error) {
+      alert(error);
+    }
+  }
+  async function deleteSentence(id: string) {
+    try {
+      const response = await axios.delete(routesApi.deleteSentence(), {
+        data: { id },
+      });
+      // setSentence([...sentences, response.data]);
+    } catch (error) {
+      alert(error);
+    }
+  }
+
   return (
     <Provider
       value={{
         fetchSentences,
         addSentence,
+        editSentence,
+        deleteSentence,
         sentences,
       }}
     >

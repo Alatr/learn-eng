@@ -11,8 +11,8 @@ class SentenceService {
     const sentence = await SentenceModel.create({
       text,
     });
-    const sentenceDto = new SentenceDto(sentence);
-    return sentenceDto;
+
+    return new SentenceDto(sentence);
   }
 }
 

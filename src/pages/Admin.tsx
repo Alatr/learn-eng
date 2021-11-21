@@ -6,6 +6,29 @@ const Admin = () => {
     useApiService();
   return (
     <Fragment>
+      {sentences.map(({ text, id }) => (
+        <form
+          key={id}
+          onSubmit={(event: React.FormEvent<HTMLFormElement>): void => {
+            event.preventDefault();
+            const newText = new FormData(event.currentTarget).get("sentence");
+            if (newText === "") {
+              const isDelete = window.confirm("delete?");
+              if (isDelete) {
+                deleteSentence(id);
+                return;
+              }
+            }
+            if (newText && newText !== text) {
+              editSentence(newText, id);
+            }
+          }}
+        >
+          <input type="text" name="sentence" defaultValue={text} />
+          <button>change</button>
+        </form>
+      ))}
+      <hr />
       <form
         onSubmit={(event: React.FormEvent<HTMLFormElement>): void => {
           event.preventDefault();
@@ -19,28 +42,6 @@ const Admin = () => {
         <input type="text" name="text" placeholder="sentence" />
         <button>add sentence</button>
       </form>
-
-      {sentences.map(({ text, id }) => (
-        <form
-          onSubmit={(event: React.FormEvent<HTMLFormElement>): void => {
-            event.preventDefault();
-            const newText = new FormData(event.currentTarget).get("sentence");
-            if (!text) {
-              const isDelete = prompt("delete?");
-              if (isDelete) {
-                deleteSentence(id);
-                return;
-              }
-            }
-            if (newText !== text) {
-              editSentence(text, id);
-            }
-          }}
-        >
-          <input type="text" name="sentence" value={text} />
-          <button>change</button>
-        </form>
-      ))}
     </Fragment>
   );
 };

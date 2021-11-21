@@ -41,7 +41,7 @@ function usePrepareSentence(sentence: string, options: prepareSentenceOptions) {
       return setPreparedSentence(shuffle(result));
     }
     return setPreparedSentence(result);
-  }, []);
+  }, [options.fakeWords, options.shuffleSentence, sentence]);
 
   const checkExercise = useCallback((): boolean | void => {
     if (sentence.length === 0) return;

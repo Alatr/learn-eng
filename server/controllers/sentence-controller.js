@@ -1,8 +1,5 @@
-import cookie from "cookie";
 import SentenceService from "../service/sentence-service.js";
-import { validationResult } from "express-validator";
-import { ApiError } from "../exceptions/api-error.js";
-import userModel from "../models/user-model.js";
+// import { ApiError } from "../exceptions/api-error.js";
 
 class SentenceController {
   async sentences(req, res, next) {
@@ -17,6 +14,24 @@ class SentenceController {
     try {
       const { text } = req.body;
       const sentence = await SentenceService.addSentence(text);
+      return res.json(sentence);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async editSentence(req, res, next) {
+    try {
+      const { newText, id } = req.body;
+      const sentence = await SentenceService.editSentence(newText, id);
+      return res.json(sentence);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async deleteSentence(req, res, next) {
+    try {
+      const { id } = req.body;
+      const sentence = await SentenceService.deleteSentence(id);
       return res.json(sentence);
     } catch (error) {
       next(error);

@@ -14,7 +14,7 @@ interface IDataSentence {
 interface IApiService {
   fetchSentences: () => void;
   addSentence: (text: FormDataEntryValue) => Promise<void>;
-  editSentence: (text: FormDataEntryValue, id: string) => Promise<void>;
+  editSentence: (newText: FormDataEntryValue, id: string) => Promise<void>;
   deleteSentence: (id: string) => Promise<void>;
   sentences: IDataSentence[];
 }
@@ -52,32 +52,44 @@ const ApiService: FC = ({ children }) => {
 
   async function addSentence(text: FormDataEntryValue) {
     try {
-      const response = await axios.post(routesApi.addSentence(), {
-        text,
-      });
+      const response = await axios.post<IDataSentence>(
+        routesApi.addSentence(),
+        {
+          text,
+        }
+      );
       setSentence([...sentences, response.data]);
     } catch (error) {
       alert(error);
     }
   }
 
-  async function editSentence(text: FormDataEntryValue, id: string) {
+  async function editSentence(newText: FormDataEntryValue, id: string) {
     try {
-      const response = await axios.post(routesApi.editSentence(), {
-        text,
-        id,
-      });
-      // setSentence([...sentences, response.data]);
+      const { data } = await axios.post<IDataSentence>(
+        routesApi.editSentence(),
+        {
+          newText,
+          id,
+        }
+      );
+      const index = sentences.findIndex((el) => el.id === data.id);
+      let updatedSentences = sentences;
+      updatedSentences[index].id = data.text;
+      setSentence(updatedSentences);
     } catch (error) {
       alert(error);
     }
   }
   async function deleteSentence(id: string) {
     try {
-      const response = await axios.delete(routesApi.deleteSentence(), {
-        data: { id },
-      });
-      // setSentence([...sentences, response.data]);
+      const { data } = await axios.delete<IDataSentence[]>(
+        routesApi.deleteSentence(),
+        {
+          data: { id },
+        }
+      );
+      setSentence(data);
     } catch (error) {
       alert(error);
     }

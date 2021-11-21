@@ -1,10 +1,12 @@
 import { render } from "react-dom";
 import init from "./init";
 
-// TODO add heroky
-// TODO add api methods change, del
 // TODO add translate
-// TODO dev mode aka admin panel pages
+// TODO add trim /s
+// add ui validation
+// add reload after action
+// search error api middleware
+// add validator
 
 const run = async () => {
   const vdom = init();
